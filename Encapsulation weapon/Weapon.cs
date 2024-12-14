@@ -7,6 +7,12 @@
 
         public Weapon(int damage, int bullets)
         {
+            if (damage < 0)
+                throw new ArgumentOutOfRangeException(nameof(damage), "Урон не может быть отрицательным");
+
+            if (bullets < 0)
+                throw new ArgumentOutOfRangeException(nameof(bullets), "Количество пуль не может быть отрицательным");
+
             _damage = damage;
             _bullets = bullets;
         }
@@ -15,12 +21,11 @@
 
         public void Fire(IDamageable target)
         {
-            if (CanFire == false)
-            {
-                Console.WriteLine("out of ammo");
+            if (target == null)
+                throw new ArgumentNullException(nameof(target), "Цель не может быть null");
 
-                return;
-            }
+            if (CanFire == false)
+                throw new InvalidOperationException("Нет патронов");
 
             target.TakeDamage(_damage);
 
